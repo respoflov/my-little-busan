@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>나의 작은 부산 지도 — 디자인 시안 v6</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root{
+    --ink:#17263B; --ink-2:rgba(23,38,59,.62); --ink-3:rgba(23,38,59,.40);
+    --sand:#FAF8F4; --card:#FFFFFF;
+    --line:rgba(23,38,59,.10); --line-soft:rgba(23,38,59,.06);
+    --accent:#B0433F; --accent-soft:rgba(176,67,63,.10);
+    --c-culture:#2C5F8A; --c-cafe:#B98336; --c-food:#CD6A33; --c-walk:#2E8B74;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:"Pretendard Variable",Pretendard,-apple-system,sans-serif;background:#EDEAE3;color:var(--ink);-webkit-font-smoothing:antialiased;padding:48px 32px 96px}
+  .wrap{max-width:1270px;margin:0 auto}
+  h1{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .sub{font-size:14px;color:var(--ink-2);margin-top:6px;line-height:1.6}
+  section{margin-top:48px}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start}
+  .phone{width:375px;height:730px;background:var(--sand);border-radius:40px;border:1px solid var(--line);box-shadow:0 0 0 1px rgba(0,0,0,.05),0 24px 48px -24px rgba(23,38,59,.25);overflow:hidden;position:relative;flex-shrink:0}
+  .phone .cap{position:absolute;top:0;left:0;right:0;height:44px;display:flex;align-items:center;justify-content:center;z-index:40;pointer-events:none}
+  .phone .cap i{width:110px;height:26px;background:#0d1420;border-radius:14px;display:block}
+  .frame-label{font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:10px;max-width:375px;line-height:1.5}
+  .splash{position:absolute;inset:0;background:var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:30;gap:14px}
+  .splash.play{animation:splashOut 2s cubic-bezier(.23,1,.32,1) forwards}
+  @keyframes splashOut{0%,55%{opacity:1}100%{opacity:0;visibility:hidden}}
+  .splash .slogo{animation:splashIn .7s cubic-bezier(.23,1,.32,1)}
+  @keyframes splashIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+  .splash .phr{font-size:13px;color:var(--ink-2)}
+  .splash .credit{position:absolute;bottom:34px;left:0;right:0;text-align:center;font-size:9.5px;font-weight:600;letter-spacing:.32em;text-indent:.32em;color:rgba(23,38,59,.26)}
+  .replay{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:50;font-size:12px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--line);padding:8px 14px;border-radius:999px;cursor:pointer;font-family:inherit}
+  .replay:active{transform:translateX(-50%) scale(.97)}
+
+  .tabs{position:absolute;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line-soft);display:flex;z-index:25;padding:8px 0 22px}
+  .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;font-weight:600;color:var(--ink-3)}
+  .tab.on{color:var(--ink)}
+
+  .dim{position:absolute;inset:0;background:rgba(23,38,59,.32)}
+  .sheet{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:10px 22px 26px;z-index:20}
+  .grab{width:36px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+  .ms-cat{font-size:11px;font-weight:650;padding:4px 8px;border-radius:6px;color:#fff;flex-shrink:0}
+  .sh-name{font-size:21px;font-weight:700;letter-spacing:-.02em}
+  .sh-sub{font-size:12.5px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+  .badges{display:flex;gap:6px;margin-top:11px;flex-wrap:wrap}
+  .badge{display:flex;align-items:center;gap:5px;font-size:11.5px;font-weight:550;color:var(--ink-2);background:var(--sand);border:1px solid var(--line-soft);padding:5px 9px;border-radius:8px}
+  .badge.link{color:var(--c-culture);font-weight:600}
+
+  /* 사진 스트립 (여러 장) */
+  .pstrip{display:flex;gap:8px;margin-top:12px}
+  .pmain{width:110px;height:74px;border-radius:10px;background:linear-gradient(135deg,#D8E4EC,#BFD8E4);display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:11px;flex-shrink:0}
+  .pthumb{width:74px;height:74px;border-radius:10px;background:linear-gradient(135deg,#E3E9EE,#CFDDE6);flex-shrink:0}
+  .padd{width:74px;height:74px;border-radius:10px;border:1.5px dashed var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-3);font-size:10px;flex-shrink:0}
+
+  .field{margin-top:10px;background:var(--sand);border:1px solid var(--line-soft);border-radius:10px;padding:10px 13px;font-size:12.5px;color:var(--ink-2)}
+  .withrow{display:flex;gap:5px;margin-top:9px;align-items:center;flex-wrap:wrap}
+  .withrow .lbl{font-size:11.5px;font-weight:600;color:var(--ink-3);margin-right:2px;width:38px}
+  .wchip{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);background:#fff}
+  .wchip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .timefield{display:flex;align-items:center;gap:6px;margin-top:9px;margin-left:44px;font-size:12px;color:var(--ink-2);background:var(--sand);border:1px solid var(--line-soft);border-radius:9px;padding:7px 11px;font-variant-numeric:tabular-nums}
+  .cta-row{display:flex;gap:10px;margin-top:14px}
+  .cta{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;font-size:15px;font-weight:650;padding:13px;border-radius:12px}
+  .cta.stamp{background:var(--accent);color:#fff;box-shadow:0 6px 16px -6px rgba(176,67,63,.5)}
+  .cta.iconbtn{background:#fff;border:1px solid var(--line);color:var(--ink);flex:0 0 50px;padding:13px 0}
+
+  /* 온보딩 */
+  .ob-card{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:#fff;border-radius:20px;padding:26px 22px;z-index:20;box-shadow:0 24px 48px -12px rgba(23,38,59,.3)}
+  .ob-card h4{font-size:18px;font-weight:700;letter-spacing:-.01em}
+  .ob-card p{font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.55}
+  .ob-date{margin-top:16px;display:flex;align-items:center;gap:8px;background:var(--sand);border:1px solid var(--line);border-radius:11px;padding:12px 14px;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  .ob-btn{margin-top:14px;background:var(--accent);color:#fff;font-size:14px;font-weight:650;text-align:center;padding:13px;border-radius:11px;box-shadow:0 6px 16px -6px rgba(176,67,63,.5)}
+  .ob-skip{margin-top:10px;text-align:center;font-size:12px;color:var(--ink-3)}
+
+  /* 스탬프북 */
+  .book{position:absolute;inset:0;padding:60px 20px 90px;background:var(--sand)}
+  .bk-h{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .bk-sub{font-size:13px;margin-top:4px;color:var(--ink-2);display:flex;align-items:center;gap:5px}
+  .prog{margin-top:14px;border-radius:14px;padding:14px 16px;background:#fff;border:1px solid var(--line)}
+  .nums{display:flex;align-items:baseline;gap:6px}
+  .big{font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+  .of{font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .bar{height:6px;border-radius:3px;margin-top:10px;overflow:hidden;background:var(--line-soft)}
+  .bar i{display:block;height:100%;width:29%;border-radius:3px;background:var(--accent)}
+  .cf-row{display:flex;gap:6px;margin-top:11px}
+  .cf{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--ink-2);padding:5px 9px;border-radius:8px;border:1px solid transparent;font-variant-numeric:tabular-nums}
+  .cf.on{background:var(--sand);border-color:var(--line)}
+  .cf .dot{width:7px;height:7px;border-radius:50%}
+  .sortrow{display:flex;gap:10px;margin-top:14px;font-size:11.5px;font-weight:600;color:var(--ink-3)}
+  .sortrow span.on{color:var(--ink);border-bottom:1.5px solid var(--ink);padding-bottom:1px}
+  .stampgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-top:12px}
+  .set{position:absolute;inset:0;background:var(--sand);padding:60px 20px 90px}
+  .set h3{font-size:22px;font-weight:700;letter-spacing:-.02em}
+  .grp{margin-top:18px}
+  .grp .gl{font-size:11px;font-weight:650;letter-spacing:.06em;color:var(--ink-3);margin-bottom:7px}
+  .srow{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .sitem{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line-soft);font-size:13.5px;font-weight:550}
+  .sitem:last-child{border-bottom:none}
+  .sitem.danger{color:var(--accent)}
+  .sitem .r{margin-left:auto}
+  .sseg{display:flex;background:var(--sand);border:1px solid var(--line-soft);border-radius:9px;padding:2px;margin-left:auto}
+  .sseg span{font-size:11.5px;font-weight:600;padding:4px 9px;border-radius:7px;color:var(--ink-3)}
+  .sseg span.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(23,38,59,.12)}
+  .sval{margin-left:auto;font-size:12.5px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+  .sg{display:flex;flex-direction:column;align-items:center;gap:5px}
+  .sg .n{font-size:9.5px;color:var(--ink-2);font-weight:600;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:74px}
+  .sg.empty .n{color:var(--ink-3)}
+
+  /* 기록 */
+  .journal{position:absolute;inset:0;padding:60px 20px 90px;background:var(--sand)}
+  .jhead{display:flex;align-items:flex-end;justify-content:space-between}
+  .seg{display:flex;background:#fff;border:1px solid var(--line);border-radius:9px;padding:2px}
+  .seg span{font-size:11.5px;font-weight:600;padding:5px 10px;border-radius:7px;color:var(--ink-3)}
+  .seg span.on{background:var(--ink);color:#fff}
+  .mon{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:650;letter-spacing:.02em;color:var(--ink-2);margin:16px 0 8px}
+  .mon .cnt{color:var(--ink-3);font-weight:600;font-variant-numeric:tabular-nums}
+  .mon svg{margin-left:auto}
+  .jcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+  .jthumb{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,#D8E4EC,#BFD8E4);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:10px;position:relative}
+  .jthumb.noimg{background:var(--sand);border:1px dashed var(--line)}
+  .jthumb .pc{position:absolute;right:4px;bottom:4px;background:rgba(23,38,59,.72);color:#fff;font-size:9px;font-weight:650;padding:2px 5px;border-radius:6px;font-variant-numeric:tabular-nums}
+  .jname{font-size:14.5px;font-weight:650;display:flex;align-items:center;gap:6px}
+  .jname i{width:8px;height:8px;border-radius:50%;display:inline-block}
+  .jmeta{font-size:11.5px;color:var(--ink-2);margin-top:3px}
+  .jmemo{font-size:12.5px;color:var(--ink-2);margin-top:6px;line-height:1.5}
+
+  /* 기록 상세 */
+  .rd{position:absolute;inset:0;background:var(--sand);padding:56px 0 30px;overflow:hidden}
+  .rd-nav{position:absolute;top:54px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:10}
+  .rd-nav .nbtn{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.92);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(23,38,59,.1)}
+  .rd-photo{height:240px;background:linear-gradient(135deg,#D8E4EC,#BFD8E4);display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;position:relative}
+  .rd-dots{display:flex;gap:5px}
+  .rd-dots i{width:6px;height:6px;border-radius:50%;background:rgba(23,38,59,.25)}
+  .rd-dots i.on{background:var(--ink)}
+  .rd-photo .pc{position:absolute;right:12px;bottom:10px;background:rgba(23,38,59,.72);color:#fff;font-size:10px;font-weight:650;padding:3px 7px;border-radius:7px}
+  .rd-body{padding:18px 22px}
+  .rd-title{display:flex;align-items:center;gap:10px}
+  .rd-title .nm{font-size:21px;font-weight:700;letter-spacing:-.02em}
+  .rd-stamp{margin-left:auto}
+  .rd-meta{margin-top:14px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .rm{display:flex;align-items:center;gap:10px;padding:12px 15px;border-bottom:1px solid var(--line-soft);font-size:13px}
+  .rm:last-child{border-bottom:none}
+  .rm .k{color:var(--ink-3);font-weight:600;font-size:11.5px;width:44px;flex-shrink:0}
+  .rm .v{font-weight:550;font-variant-numeric:tabular-nums}
+  .rd-memo{margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;font-size:13.5px;line-height:1.6;color:var(--ink)}
+  .rd-actions{display:flex;gap:10px;margin-top:14px}
+  .rd-actions .a{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;font-weight:650;padding:12px;border-radius:11px;background:#fff;border:1px solid var(--line);color:var(--ink)}
+
+  .note{font-size:12.5px;color:var(--ink-2);line-height:1.6;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;max-width:780px;margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>나의 작은 부산 지도 — 디자인 시안 v6</h1>
+  <p class="sub">v5 대비 변경: 도장 기울기 확대(±9~14°, 의도가 보이게) · '어떻게'에 ＋ 버튼 · 메모 한 줄 시작→길게 자동 확장 · 스탬프북 정렬(등록순/가나다순) · 설정 탭 기능 확충. 스플래시·오버뷰·줌인·다크는 v4와 동일.</p>
+
+  <section>
+    <div class="row">
+
+      <!-- 0b. 온보딩 -->
+      <div>
+        <div class="frame-label">0a. 스플래시 — 최하단 정중앙 RESPOFLOV 각인 (옅은 색·고딕·자간 넓게, 하단에서 34px 띄움)</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--ink-3);font-size:13px">← 페이드아웃 후 메인 진입</div>
+          <div class="splash play" id="sp">
+            <svg class="slogo" width="64" height="64" viewBox="0 0 88 88" fill="none">
+              <circle cx="44" cy="44" r="39" stroke="#2E8B74" stroke-width="4" stroke-dasharray="7 6" fill="none"/>
+              <circle cx="44" cy="44" r="29" stroke="#17263B" stroke-width="3.5" fill="#FAF8F4"/>
+              <path d="M30 44c4-4.5 8.5-4.5 12.5 0s8.5 4.5 12.5 0" stroke="#2C5F8A" stroke-width="3.5" stroke-linecap="round"/>
+              <circle cx="44" cy="31" r="4.5" fill="#B0433F"/>
+            </svg>
+            <div style="font-size:17px;font-weight:700;letter-spacing:-.01em">나의 작은 부산 지도</div>
+            <div class="phr">나만의 속도로, 부산 한 바퀴</div>
+            <div class="credit">RESPOFLOV</div>
+          </div>
+          <button class="replay" onclick="var s=document.getElementById('sp');s.classList.remove('play');void s.offsetWidth;s.classList.add('play')">다시 재생</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="frame-label">0b. 최초 실행 1회 — 수집 시작일 입력 (기본값 오늘, 설정에서 변경 가능)</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="dim"></div>
+          <div class="ob-card">
+            <h4>스탬프북을 시작할까요?</h4>
+            <p>모으기 시작한 날을 알려주시면 스탬프북에 "2026년 8월부터 모으는 중"처럼 표시됩니다.</p>
+            <div class="ob-date">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="18" rx="2" stroke="#17263B" stroke-width="1.7"/><path d="M16 2v4M8 2v4M3 10h18" stroke="#17263B" stroke-width="1.7" stroke-linecap="round"/></svg>
+              2026. 08. 01
+            </div>
+            <div class="ob-btn">이 날부터 모으기</div>
+            <div class="ob-skip">나중에 설정에서 정할게요</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 상세 -->
+      <div>
+        <div class="frame-label">1. 장소 상세 — 사진 여러 장(스트립) + 누구와/어떻게/시간 기록</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="dim"></div>
+          <div class="sheet">
+            <div class="grab"></div>
+            <span class="ms-cat" style="background:var(--c-cafe)">카페</span>
+            <div class="sh-name" style="margin-top:8px">무명일기</div>
+            <div class="sh-sub">1950년대 창고를 리노베이션한 빈티지 감성 카페</div>
+            <div class="badges">
+              <div class="badge">📍 영도구</div>
+              <div class="badge">🚌 버스·택시 권장</div>
+              <div class="badge link">
+                <svg width="12" height="12" viewBox="0 0 18 18" fill="none"><path d="M7 4H4.5A1.5 1.5 0 0 0 3 5.5v8A1.5 1.5 0 0 0 4.5 15h8a1.5 1.5 0 0 0 1.5-1.5V11M11 3h4v4M15 3l-6.5 6.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                카카오맵
+              </div>
+            </div>
+            <div class="pstrip">
+              <div class="pmain">대표 사진</div>
+              <div class="pthumb"></div>
+              <div class="padd">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                추가
+              </div>
+            </div>
+            <div class="field">✏️ 나의 메모 — 한 줄로 시작, 길어지면 칸이 자동으로 늘어나요</div>
+            <div class="withrow">
+              <span class="lbl">누구와</span>
+              <span class="wchip on">혼자</span>
+              <span class="wchip">연인</span>
+              <span class="wchip">친구</span>
+              <span class="wchip">가족</span>
+              <span class="wchip">＋</span>
+            </div>
+            <div class="withrow">
+              <span class="lbl">어떻게</span>
+              <span class="wchip">🚇 지하철</span>
+              <span class="wchip on">🚌 버스</span>
+              <span class="wchip">🚗 자차</span>
+              <span class="wchip">🚶 도보</span>
+              <span class="wchip">＋</span>
+            </div>
+            <div class="timefield">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#17263B" stroke-opacity=".5" stroke-width="1.7"/><path d="M12 7v5l3 2" stroke="#17263B" stroke-opacity=".5" stroke-width="1.7" stroke-linecap="round"/></svg>
+              13:20 → 14:05 · 45분 <span style="color:var(--ink-3);margin-left:auto">선택 입력</span>
+            </div>
+            <div class="cta-row">
+              <div class="cta stamp">
+                <svg width="17" height="17" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.4" stroke="#fff" stroke-width="1.8" stroke-dasharray="3.4 2.6"/><path d="M5.5 9.6c1.2-1.4 2.4-1.4 3.5 0s2.3 1.4 3.5 0" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg>
+                방문 도장 찍기
+              </div>
+              <div class="cta iconbtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M8 7l4-4 4 4" stroke="#17263B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" stroke="#17263B" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. 스탬프북 -->
+      <div>
+        <div class="frame-label">2. 스탬프북 — 시작일 사용자값 · 카테고리 필터(진행률 줄 자체가 필터) · 스탬프 섞임 배치(장소 순서 고정)</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="book">
+            <div class="bk-h">스탬프북</div>
+            <div class="bk-sub">2026년 8월 1일부터 모으는 중
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" stroke="currentColor" stroke-opacity=".4" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="prog">
+              <div class="nums"><span class="big">16</span><span class="of">/ 55곳 방문</span></div>
+              <div class="bar"><i></i></div>
+              <div class="cf-row">
+                <span class="cf on">전체 16/55</span>
+                <span class="cf"><span class="dot" style="background:var(--c-culture)"></span>5/15</span>
+                <span class="cf"><span class="dot" style="background:var(--c-cafe)"></span>6/15</span>
+                <span class="cf"><span class="dot" style="background:var(--c-food)"></span>2/15</span>
+                <span class="cf"><span class="dot" style="background:var(--c-walk)"></span>3/10</span>
+              </div>
+            </div>
+            <div class="sortrow">정렬 <span class="on">등록순</span><span>가나다순</span></div>
+            <div class="stampgrid">
+              <div class="sg">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none" style="transform:rotate(-12deg)"><circle cx="44" cy="44" r="39" stroke="#2E8B74" stroke-width="5" stroke-dasharray="7 6"/><path d="M26 48c5.5-6 11.5-6 17 0s11.5 6 17 0" stroke="#2E8B74" stroke-width="5" stroke-linecap="round"/><circle cx="44" cy="30" r="5.5" fill="#2E8B74"/></svg>
+                <span class="n">절영해안산책로</span>
+              </div>
+              <div class="sg empty">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none"><circle cx="44" cy="44" r="39" stroke="rgba(23,38,59,.18)" stroke-width="4" stroke-dasharray="7 6"/></svg>
+                <span class="n">웨이브온커피</span>
+              </div>
+              <div class="sg">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none" style="transform:rotate(10deg)"><circle cx="44" cy="44" r="39" stroke="#2C5F8A" stroke-width="5" stroke-dasharray="7 6"/><path d="M26 48c5.5-6 11.5-6 17 0s11.5 6 17 0" stroke="#2C5F8A" stroke-width="5" stroke-linecap="round"/><circle cx="44" cy="30" r="5.5" fill="#2C5F8A"/></svg>
+                <span class="n">부산현대미술관</span>
+              </div>
+              <div class="sg empty">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none"><circle cx="44" cy="44" r="39" stroke="rgba(23,38,59,.18)" stroke-width="4" stroke-dasharray="7 6"/></svg>
+                <span class="n">흰여울문화마을</span>
+              </div>
+              <div class="sg">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none" style="transform:rotate(-14deg)"><circle cx="44" cy="44" r="39" stroke="#B98336" stroke-width="5" stroke-dasharray="7 6"/><path d="M26 48c5.5-6 11.5-6 17 0s11.5 6 17 0" stroke="#B98336" stroke-width="5" stroke-linecap="round"/><circle cx="44" cy="30" r="5.5" fill="#B98336"/></svg>
+                <span class="n">모모스커피</span>
+              </div>
+              <div class="sg empty">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none"><circle cx="44" cy="44" r="39" stroke="rgba(23,38,59,.18)" stroke-width="4" stroke-dasharray="7 6"/></svg>
+                <span class="n">F1963</span>
+              </div>
+              <div class="sg">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none" style="transform:rotate(11deg)"><circle cx="44" cy="44" r="39" stroke="#CD6A33" stroke-width="5" stroke-dasharray="7 6"/><path d="M26 48c5.5-6 11.5-6 17 0s11.5 6 17 0" stroke="#CD6A33" stroke-width="5" stroke-linecap="round"/><circle cx="44" cy="30" r="5.5" fill="#CD6A33"/></svg>
+                <span class="n">수복센타</span>
+              </div>
+              <div class="sg empty">
+                <svg width="52" height="52" viewBox="0 0 88 88" fill="none"><circle cx="44" cy="44" r="39" stroke="rgba(23,38,59,.18)" stroke-width="4" stroke-dasharray="7 6"/></svg>
+                <span class="n">이기대</span>
+              </div>
+            </div>
+          </div>
+          <div class="tabs">
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5.5 7 3l4 2 5-2v9.5L11 15l-4-2-5 2V5.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>지도</div>
+            <div class="tab on"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.7" stroke-dasharray="3 2.4"/></svg>스탬프북</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>추가</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>기록</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>설정</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. 기록 -->
+      <div>
+        <div class="frame-label">3. 기록 — 월별/카테고리별 전환 세그먼트 + 섹션 접힘(7월은 접힌 상태) + 사진 +N 배지</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="journal">
+            <div class="jhead">
+              <div>
+                <div class="bk-h">기록</div>
+                <div class="bk-sub">방문 16곳 · 사진 9장 · 메모 12개</div>
+              </div>
+              <div class="seg"><span class="on">월별</span><span>카테고리</span></div>
+            </div>
+            <div class="mon">2026년 8월 <span class="cnt">3</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="jcard">
+              <div class="jthumb">사진<span class="pc">+3</span></div>
+              <div>
+                <div class="jname"><i style="background:var(--c-walk)"></i>절영해안산책로</div>
+                <div class="jmeta">8월 12일 (수) · 친구 · 🚌 45분</div>
+                <div class="jmemo">"해안터널 지나니 바람이 완전 달라짐"</div>
+              </div>
+            </div>
+            <div class="jcard">
+              <div class="jthumb">사진<span class="pc">+1</span></div>
+              <div>
+                <div class="jname"><i style="background:var(--c-culture)"></i>부산현대미술관</div>
+                <div class="jmeta">8월 9일 (일) · 혼자 · 🚌</div>
+                <div class="jmemo">"수직정원, 사진보다 실물"</div>
+              </div>
+            </div>
+            <div class="jcard">
+              <div class="jthumb noimg">－</div>
+              <div>
+                <div class="jname"><i style="background:var(--c-cafe)"></i>모모스커피 본점</div>
+                <div class="jmeta">8월 2일 (일) · 연인 · 🚇</div>
+                <div class="jmemo">"정원 자리 사수 성공"</div>
+              </div>
+            </div>
+            <div class="mon">2026년 7월 <span class="cnt">5</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="mon">2026년 6월 <span class="cnt">8</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="m9 6 6 6-6 6" stroke="currentColor" stroke-opacity=".4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <div class="tabs">
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5.5 7 3l4 2 5-2v9.5L11 15l-4-2-5 2V5.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>지도</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.7" stroke-dasharray="3 2.4"/></svg>스탬프북</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>추가</div>
+            <div class="tab on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>기록</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>설정</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. 기록 상세 -->
+      <div>
+        <div class="frame-label">4. 기록 상세 (신설) — 기록 카드 탭 시. 사진 캐러셀(스와이프) + 메타 + 메모 전문 + 공유/수정</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="rd">
+            <div class="rd-nav">
+              <div class="nbtn"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M9.5 3 5 7.5 9.5 12" stroke="#17263B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              <div style="display:flex;gap:8px">
+                <div class="nbtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" stroke="#17263B" stroke-width="1.8" stroke-linejoin="round"/></svg></div>
+                <div class="nbtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M12 3v12M8 7l4-4 4 4" stroke="#17263B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7" stroke="#17263B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+              </div>
+            </div>
+            <div class="rd-photo">
+              <div class="rd-dots"><i class="on"></i><i></i><i></i><i></i></div>
+              <span class="pc">1 / 4</span>
+            </div>
+            <div class="rd-body">
+              <div class="rd-title">
+                <span class="ms-cat" style="background:var(--c-walk)">산책·뷰</span>
+                <span class="nm">절영해안산책로</span>
+                <span class="rd-stamp">
+                  <svg width="44" height="44" viewBox="0 0 88 88" fill="none" style="transform:rotate(-11deg)"><circle cx="44" cy="44" r="39" stroke="#2E8B74" stroke-width="5" stroke-dasharray="7 6"/><path d="M26 48c5.5-6 11.5-6 17 0s11.5 6 17 0" stroke="#2E8B74" stroke-width="5" stroke-linecap="round"/><circle cx="44" cy="30" r="5.5" fill="#2E8B74"/></svg>
+                </span>
+              </div>
+              <div class="rd-meta">
+                <div class="rm"><span class="k">날짜</span><span class="v">2026년 8월 12일 (수)</span></div>
+                <div class="rm"><span class="k">누구와</span><span class="v">친구</span></div>
+                <div class="rm"><span class="k">이동</span><span class="v">🚌 버스 · 13:20 → 14:05 (45분)</span></div>
+              </div>
+              <div class="rd-memo">"해안터널 지나니 바람이 완전 달라짐. 다음엔 노을 시간대에 반대 방향으로 걷기."</div>
+              <div class="rd-actions">
+                <div class="a">
+                  <svg width="15" height="15" viewBox="0 0 18 18" fill="none"><path d="M2 5.5 7 3l4 2 5-2v9.5L11 15l-4-2-5 2V5.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+                  지도에서 보기
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 설정 확충 -->
+      <div>
+        <div class="frame-label">5. 설정 — 기능 확충 (스탬프북·데이터·안내 그룹 추가)</div>
+        <div class="phone">
+          <div class="cap"><i></i></div>
+          <div class="set">
+            <h3>설정</h3>
+            <div class="grp">
+              <div class="gl">화면</div>
+              <div class="srow">
+                <div class="sitem">테마 <div class="sseg"><span>라이트</span><span class="on">시스템</span><span>다크</span></div></div>
+                <div class="sitem">언어 <span class="sval">한국어 ›</span></div>
+              </div>
+            </div>
+            <div class="grp">
+              <div class="gl">스탬프북</div>
+              <div class="srow">
+                <div class="sitem">수집 시작일 <span class="sval">2026. 08. 01 ›</span></div>
+                <div class="sitem">기본 정렬 <div class="sseg"><span class="on">등록순</span><span>가나다순</span></div></div>
+              </div>
+            </div>
+            <div class="grp">
+              <div class="gl">데이터</div>
+              <div class="srow">
+                <div class="sitem">기록 백업 내보내기 <span class="sval">JSON ›</span></div>
+                <div class="sitem">백업 불러오기 <span class="sval">›</span></div>
+                <div class="sitem danger">모든 기록 초기화 <span class="sval" style="color:inherit">›</span></div>
+              </div>
+            </div>
+            <div class="grp">
+              <div class="gl">안내</div>
+              <div class="srow">
+                <div class="sitem">홈 화면에 추가하는 방법 <span class="sval">›</span></div>
+                <div class="sitem">장소 정보 출처 <span class="sval">›</span></div>
+                <div class="sitem">오픈소스 라이선스 <span class="sval">›</span></div>
+                <div class="sitem">버전 <span class="sval">1.0.0</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="tabs">
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M2 5.5 7 3l4 2 5-2v9.5L11 15l-4-2-5 2V5.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>지도</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.7" stroke-dasharray="3 2.4"/></svg>스탬프북</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>추가</div>
+            <div class="tab"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>기록</div>
+            <div class="tab on"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/></svg>설정</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="note">
+      <b>메모</b> · 스탬프 도장의 회전(비뚤어짐)은 의도된 디자인입니다 — 물결 모양 자체는 동일하고 도장 전체가 -8°~+6° 사이로 랜덤하게 기울어, 손으로 찍은 도장의 질감을 냅니다.<br>
+      <b>팔레트 한난 혼재</b> · 검토 결과 유지 판단 — 서피스(따뜻한 중립)가 지배하고 카테고리 한난 2:2, 액센트 인주가 따뜻한 무게추 역할을 하는 의도된 균형입니다. 전부 저채도 톤이라 충돌하지 않습니다.
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
