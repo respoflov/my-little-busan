@@ -1,6 +1,7 @@
 # 내 손안의 작은 부산 — 디자인 문서 (확정본)
 
-> 보관·공유용 문서. 시각 시안 원본은 [design-mockup.html](design-mockup.html) (브라우저로 열람).
+> 보관·공유용 문서. 완성된 화면은 [design-v1-final.html](design-v1-final.html)에서 한눈에 볼 수 있습니다(브라우저로 열람).
+> [design-mockup.html](design-mockup.html)은 구현 전 승인 과정에서 쓴 시안 v1~v6입니다.
 > 2026-07-28 확정, 시안 v6 + 구현 반영본.
 
 ## 1. 컨셉

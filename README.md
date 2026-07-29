@@ -74,7 +74,8 @@ src/
 
 ## 문서
 
-- [DESIGN.md](DESIGN.md) — 확정 디자인(팔레트·타이포·화면 구조)
-- [design-mockup.html](design-mockup.html) — 승인받은 시안 원본 (보관용, 삭제 금지)
+- [design-v1-final.html](design-v1-final.html) — **v1 최종 디자인 목업** (진입~전 화면 + 디자인 시스템). 브라우저로 열람
+- [DESIGN.md](DESIGN.md) — 확정 디자인 규칙(팔레트·타이포·화면 구조)
+- [design-mockup.html](design-mockup.html) — 구현 전 승인용 시안 v1~v6 (제작 과정 기록, 삭제 금지)
 - [places_draft.md](places_draft.md) — 장소 64곳 원본 리스트
 - [히스토리.md](히스토리.md) — 제작 이력
