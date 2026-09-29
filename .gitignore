@@ -28,3 +28,13 @@ dist-ssr
 
 # 확인용 아이콘 사본 (원본은 public/)
 아이콘/
+
+# 운영체제 파일
+.DS_Store
+
+# Claude Code 작업 파일 (로컬에만 보관, 저장소에는 올리지 않음)
+.claude/
+다음세션_프롬프트*.txt
+
+# 개인 백업 파일
+*.private-backup.*
