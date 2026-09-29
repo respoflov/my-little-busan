@@ -1,3 +1,4 @@
+// 여러 화면이 함께 쓰는 작은 UI 조각 모음 (카테고리 태그·칩·세그먼트·헤더·그룹·행·토스트)
 import type { ReactNode } from "react"
 import { CATEGORY_COLOR, type Category } from "@/lib/types"
 import { Portal } from "./Portal"
@@ -125,6 +126,7 @@ export function Group({ label, children }: { label?: string; children: ReactNode
   )
 }
 
+// 설정 목록의 한 줄. 누를 수 있고 위험 동작은 빨간색으로 표시한다
 export function Row({
   children,
   onClick,

@@ -1,3 +1,4 @@
+// 설정 탭: 테마·언어·데이터 백업·설치 안내·라이선스·버전
 import { useEffect, useRef, useState, type RefObject } from "react"
 import { ChevronRight, RotateCcw, TriangleAlert } from "lucide-react"
 import { Group, Row, ScreenHeader, Segmented, Toast } from "@/components/bits"
@@ -10,8 +11,10 @@ import { PLACES } from "@/data/places"
 import { formatDate } from "@/lib/i18n"
 import type { Lang, StampSort, ThemeMode } from "@/lib/types"
 
+// 열려 있는 안내 팝업 종류
 type InfoKey = "install" | "source" | "license" | null
 
+// 설정 화면 본체
 export function SettingsScreen({
   startDateRef,
 }: {

@@ -1,3 +1,4 @@
+// 앱 전역 상태(React Context): 데이터와 그 데이터를 바꾸는 함수들을 모든 화면에 제공한다
 import {
   createContext,
   useCallback,
@@ -15,6 +16,7 @@ import { searchPlace } from "./kakao"
 import { t, type Dict } from "./i18n"
 import type { AppData, GeoInfo, Place, Settings, Visit } from "./types"
 
+// 화면에 제공하는 상태와 동작 목록
 interface Store {
   data: AppData
   d: Dict
@@ -40,6 +42,7 @@ interface Store {
 
 const Ctx = createContext<Store | null>(null)
 
+// 전역 상태를 만들고 변경될 때마다 저장하는 Provider
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [data, setData] = useState<AppData>(() => loadData())
 
@@ -266,6 +269,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
 
+// 화면에서 전역 상태를 꺼내 쓰는 훅
 export function useStore(): Store {
   const ctx = useContext(Ctx)
   if (!ctx) throw new Error("useStore must be used inside StoreProvider")

@@ -1,3 +1,4 @@
+// IndexedDB에 저장된 사진을 불러와 보여 주는 이미지 컴포넌트
 import { useEffect, useState } from "react"
 import { getPhotoURL } from "@/lib/photos"
 

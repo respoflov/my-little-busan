@@ -1,3 +1,4 @@
+// 아래에서 올라오는 바텀시트 공용 컴포넌트
 import { useEffect, type ReactNode } from "react"
 import { Portal } from "./Portal"
 

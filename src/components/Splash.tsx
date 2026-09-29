@@ -1,3 +1,4 @@
+// 앱을 열 때마다 나오는 진입 화면 (빈 화면 → 로고 페이드인 → 머무름 → 페이드아웃)
 import { useEffect, useState } from "react"
 import { Logo } from "./Logo"
 import type { Dict } from "@/lib/i18n"
@@ -7,6 +8,7 @@ const BLANK = 1500 // 아무것도 없는 화면
 const FADE = 900 // 페이드 인/아웃에 걸리는 시간
 const HOLD = 2000 // 로고가 다 보인 뒤 머무는 시간
 
+// 스플래시 진행 단계: 빈 화면, 나타나는 중, 사라지는 중
 type Phase = "blank" | "in" | "out"
 
 /**

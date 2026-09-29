@@ -1,3 +1,4 @@
+// 장소 추가 탭: 카카오 장소 검색으로 나만의 장소를 등록한다
 import { useEffect, useState } from "react"
 import { Trash2 } from "lucide-react"
 import { DISTRICTS } from "@/data/districts"

@@ -1,3 +1,4 @@
+// 최초 실행 안내: 도장 수집 시작일을 정하는 팝업
 import { useState } from "react"
 import { CalendarDays } from "lucide-react"
 import { todayISO } from "@/lib/utils"

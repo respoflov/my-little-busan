@@ -1,3 +1,4 @@
+// 카카오맵 JavaScript SDK를 불러오고 주소·장소 검색을 감싸는 모듈
 import { KAKAO_JS_KEY } from "./config"
 import { DISTRICTS } from "@/data/districts"
 import type { GeoInfo } from "./types"
@@ -9,10 +10,12 @@ declare global {
   }
 }
 
+// 위도·경도 좌표
 export interface KakaoLatLng {
   getLat(): number
   getLng(): number
 }
+// 이 앱이 쓰는 카카오 지도·마커·오버레이·검색 결과의 최소 타입들
 interface KakaoMapInstance {
   setCenter(latlng: KakaoLatLng): void
   setLevel(level: number, opts?: { animate?: boolean }): void
@@ -31,6 +34,7 @@ interface KakaoPlacesResult {
   x: string
   y: string
 }
+// window.kakao 전역 객체 중 이 앱이 쓰는 부분
 export interface KakaoNamespace {
   maps: {
     load(cb: () => void): void
@@ -68,6 +72,7 @@ export interface KakaoNamespace {
   }
 }
 
+// SDK 로딩 상태
 export type KakaoLoadState = "idle" | "loading" | "ready" | "error"
 
 let loadPromise: Promise<KakaoNamespace> | null = null

@@ -1,6 +1,8 @@
+// 화면 아래 5칸 탭 막대
 import { BookOpen, Map, Plus, Settings } from "lucide-react"
 import type { Dict } from "@/lib/i18n"
 
+// 탭 이름 (지도·도장·추가·기록·설정)
 export type Tab = "map" | "stampbook" | "add" | "journal" | "settings"
 
 /** 스탬프북 탭 아이콘 — 도장 테두리를 그대로 쓴다 (lucide에 없는 형태) */
@@ -21,6 +23,7 @@ function StampIcon({ size = 18 }: { size?: number }) {
 
 const ORDER: Tab[] = ["map", "stampbook", "add", "journal", "settings"]
 
+// 현재 탭을 강조하고 누르면 onChange로 탭을 바꾼다
 export function TabBar({
   tab,
   onChange,

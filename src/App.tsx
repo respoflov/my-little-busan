@@ -1,3 +1,4 @@
+// 앱 최상위 화면: 스플래시 → 최초 안내 → 5개 탭(지도·도장·추가·기록·설정)과 장소 시트를 전환한다
 import { useCallback, useRef, useState } from "react"
 import { Splash } from "@/components/Splash"
 import { Onboarding } from "@/components/Onboarding"
@@ -14,6 +15,7 @@ import { useStore } from "@/lib/store"
 import { todayISO } from "@/lib/utils"
 import type { Place } from "@/lib/types"
 
+// 스플래시·온보딩 진행 상태, 현재 탭, 열려 있는 장소·구 화면을 관리하는 루트 컴포넌트
 export default function App() {
   const { d, data, setSettings, districtOf, placeById } = useStore()
   const [splashDone, setSplashDone] = useState(false)

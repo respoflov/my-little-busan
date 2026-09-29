@@ -1,8 +1,10 @@
+// 장소 카테고리 (문화·카페·맛집·산책)
 export type Category = "culture" | "cafe" | "food" | "walk"
 
 /** 주 이동수단 — 장소 데이터의 권장 교통(places), 기록의 실제 이동수단(visit)에 함께 쓰임 */
 export type Transit = "subway" | "bus" | "car" | "walk" | "unknown"
 
+// 장소 한 곳의 정보
 export interface Place {
   id: string
   name: string
@@ -34,6 +36,7 @@ export interface GeoInfo {
   at: string
 }
 
+// 방문 기록 (도장 한 개)
 export interface Visit {
   placeId: string
   /** 방문일 YYYY-MM-DD */
@@ -54,10 +57,12 @@ export interface Visit {
   createdAt: string
 }
 
+// 테마·언어·도장북 정렬 설정 값
 export type ThemeMode = "light" | "dark" | "system"
 export type Lang = "ko" | "en"
 export type StampSort = "registered" | "name"
 
+// 사용자 설정
 export interface Settings {
   theme: ThemeMode
   lang: Lang
@@ -70,6 +75,7 @@ export interface Settings {
   defaultsCleared: boolean
 }
 
+// localStorage에 저장하는 앱 데이터 전체
 export interface AppData {
   version: number
   settings: Settings

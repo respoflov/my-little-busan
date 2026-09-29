@@ -348,12 +348,15 @@ const dict = {
   },
 } as const
 
+// 한국어 사전과 같은 모양의 UI 문구 묶음 타입
 export type Dict = (typeof dict)["ko"]
 
+// 선택한 언어의 UI 문구 묶음을 돌려준다
 export function t(lang: Lang): Dict {
   return dict[lang] as Dict
 }
 
+// 카테고리 표시 이름
 export function categoryLabel(cat: Category, d: Dict): string {
   return cat === "culture"
     ? d.catCulture
@@ -364,6 +367,7 @@ export function categoryLabel(cat: Category, d: Dict): string {
         : d.catWalk
 }
 
+// 이동수단 표시 이름
 export function transitLabel(tr: Transit | string, d: Dict): string {
   switch (tr) {
     case "subway":
@@ -381,6 +385,7 @@ export function transitLabel(tr: Transit | string, d: Dict): string {
   }
 }
 
+// 이동수단 아이콘 문자
 export function transitIcon(tr: Transit | string): string {
   switch (tr) {
     case "subway":
@@ -401,6 +406,7 @@ export function companionOptions(d: Dict): string[] {
   return [d.coAlone, d.coPartner, d.coFriend, d.coFamily]
 }
 
+// "YYYY-MM-DD"를 "2026년 7월 29일 (수)" 형식으로 바꾼다 (영어면 July 29, 2026)
 export function formatDate(iso: string, lang: Lang): string {
   const [y, m, dd] = iso.split("-").map(Number)
   if (!y || !m || !dd) return iso
@@ -416,6 +422,7 @@ export function formatDate(iso: string, lang: Lang): string {
   return `${y}년 ${m}월 ${dd}일 (${days[date.getDay()]})`
 }
 
+// "YYYY-MM-DD"를 "7월 29일" 형식으로 짧게 바꾼다
 export function formatDateShort(iso: string, lang: Lang): string {
   const [y, m, dd] = iso.split("-").map(Number)
   if (!y || !m || !dd) return iso
@@ -428,6 +435,7 @@ export function formatDateShort(iso: string, lang: Lang): string {
   return `${m}월 ${dd}일`
 }
 
+// "YYYY-MM"을 "2026년 7월" 형식으로 바꾼다
 export function formatMonth(ym: string, lang: Lang): string {
   const [y, m] = ym.split("-").map(Number)
   if (!y || !m) return ym
@@ -440,6 +448,7 @@ export function formatMonth(ym: string, lang: Lang): string {
   return `${y}년 ${m}월`
 }
 
+// 구 id를 선택한 언어의 구 이름으로 바꾼다
 export function districtName(
   d: { name: string; nameEn: string } | undefined,
   lang: Lang,

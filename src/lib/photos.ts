@@ -10,6 +10,7 @@ const QUALITY = 0.82
 
 let dbPromise: Promise<IDBDatabase> | null = null
 
+// 사진 저장용 IndexedDB를 한 번만 열어 재사용한다
 function openDB(): Promise<IDBDatabase> {
   if (!dbPromise) {
     dbPromise = new Promise((resolve, reject) => {
@@ -24,6 +25,7 @@ function openDB(): Promise<IDBDatabase> {
   return dbPromise
 }
 
+// 사진 저장소에 트랜잭션 하나를 열어 요청을 실행하고 결과를 Promise로 돌려준다
 function tx<T>(
   mode: IDBTransactionMode,
   fn: (store: IDBObjectStore) => IDBRequest<T>,
@@ -39,6 +41,7 @@ function tx<T>(
   )
 }
 
+// 사진을 긴 변 1600px 이하 JPEG로 줄인다
 async function shrink(file: File | Blob): Promise<Blob> {
   const bitmap = await createImageBitmap(file)
   const scale = Math.min(1, MAX_EDGE / Math.max(bitmap.width, bitmap.height))
@@ -60,6 +63,7 @@ async function shrink(file: File | Blob): Promise<Blob> {
   return blob ?? file
 }
 
+// 사진을 줄여 저장하고 키를 돌려준다
 export async function addPhoto(file: File | Blob): Promise<string> {
   const key = `p_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`
   const blob = await shrink(file)
@@ -67,6 +71,7 @@ export async function addPhoto(file: File | Blob): Promise<string> {
   return key
 }
 
+// 키로 사진을 꺼낸다
 export async function getPhoto(key: string): Promise<Blob | undefined> {
   try {
     return await tx<Blob | undefined>("readonly", (s) => s.get(key))
@@ -75,6 +80,7 @@ export async function getPhoto(key: string): Promise<Blob | undefined> {
   }
 }
 
+// 키에 해당하는 사진을 지운다
 export async function deletePhoto(key: string): Promise<void> {
   try {
     await tx("readwrite", (s) => s.delete(key))
@@ -83,6 +89,7 @@ export async function deletePhoto(key: string): Promise<void> {
   }
 }
 
+// 저장된 사진을 모두 지운다
 export async function clearPhotos(): Promise<void> {
   try {
     await tx("readwrite", (s) => s.clear())
@@ -104,6 +111,7 @@ export async function countPhotos(): Promise<number> {
    같은 사진을 여러 화면에서 반복해 열기 때문에 URL을 재사용한다. */
 const urlCache = new Map<string, string>()
 
+// 사진을 화면에 쓸 URL로 만든다. 한 번 만든 URL은 캐시해 재사용한다
 export async function getPhotoURL(key: string): Promise<string | null> {
   const cached = urlCache.get(key)
   if (cached) return cached
@@ -114,6 +122,7 @@ export async function getPhotoURL(key: string): Promise<string | null> {
   return url
 }
 
+// 더 쓰지 않는 사진 URL을 해제해 메모리를 돌려준다
 export function revokePhotoURL(key: string) {
   const url = urlCache.get(key)
   if (url) {

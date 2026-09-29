@@ -1,3 +1,4 @@
+// 자식 요소를 body 바로 아래에 그리는 포털 (시트·모달이 다른 요소에 가려지지 않게)
 import { createPortal } from "react-dom"
 import type { ReactNode } from "react"
 

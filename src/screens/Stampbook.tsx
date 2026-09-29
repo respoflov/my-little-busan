@@ -1,3 +1,4 @@
+// 도장북 탭: 모은 도장을 카테고리별로 모아 본다
 import { useMemo, useState } from "react"
 import { Pencil } from "lucide-react"
 import { Stamp } from "@/components/Stamp"

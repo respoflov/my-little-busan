@@ -1,3 +1,4 @@
+// 기록 상세 화면: 사진·메모·동행·이동수단과 공유 카드 만들기
 import { useEffect, useState } from "react"
 import { ChevronLeft, Map as MapIcon, Pencil, Share } from "lucide-react"
 import { PhotoImg } from "@/components/PhotoImg"

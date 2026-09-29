@@ -1,3 +1,4 @@
+// 앱 데이터(설정·방문 기록·추가 장소)를 localStorage에 저장하고 읽는다
 import type { AppData, Settings } from "./types"
 
 const KEY = "my-little-busan/v1"
@@ -12,6 +13,7 @@ export const DEFAULT_SETTINGS: Settings = {
   defaultsCleared: false,
 }
 
+// 처음 실행할 때의 빈 데이터
 export function emptyData(): AppData {
   return {
     version: DATA_VERSION,
@@ -40,6 +42,7 @@ export function loadData(): AppData {
   }
 }
 
+// 데이터를 저장한다. 저장 공간이 부족하면 false를 돌려준다
 export function saveData(data: AppData): boolean {
   try {
     localStorage.setItem(KEY, JSON.stringify(data))
@@ -50,6 +53,7 @@ export function saveData(data: AppData): boolean {
   }
 }
 
+// 저장된 데이터를 지운다
 export function clearData() {
   localStorage.removeItem(KEY)
 }

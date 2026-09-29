@@ -1,3 +1,4 @@
+// 기록 탭: 방문 일기 피드
 import { useMemo, useState } from "react"
 import { ChevronDown, ChevronRight } from "lucide-react"
 import { PhotoImg } from "@/components/PhotoImg"
@@ -6,6 +7,7 @@ import { useStore } from "@/lib/store"
 import { categoryLabel, formatDateShort, formatMonth, transitIcon } from "@/lib/i18n"
 import { CATEGORY_IDS, type Category, type Place, type Visit } from "@/lib/types"
 
+// 묶는 기준 (월별·카테고리별)과 피드 한 줄의 데이터
 type GroupBy = "month" | "category"
 interface Entry {
   place: Place

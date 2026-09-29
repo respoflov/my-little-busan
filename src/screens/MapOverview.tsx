@@ -1,3 +1,4 @@
+// 지도 탭: 부산 16개 구를 그린 개요 지도와 구별 방문 현황
 import { useMemo } from "react"
 import { DISTRICTS, DISTRICT_VIEWBOX } from "@/data/districts"
 import { Logo } from "@/components/Logo"

@@ -1,3 +1,4 @@
+// 방문 기록을 1080×1350 공유 카드 이미지로 그리고 공유하거나 내려받는다
 import { getPhoto } from "./photos"
 import { CATEGORY_COLOR, type Place, type Visit } from "./types"
 import { categoryLabel, formatDate, transitLabel, type Dict } from "./i18n"

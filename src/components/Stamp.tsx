@@ -1,5 +1,7 @@
+// 장소 카테고리 색으로 찍히는 도장 그림
 import { CATEGORY_COLOR, type Category } from "@/lib/types"
 
+// 도장 표시 옵션
 interface Props {
   category: Category
   size?: number
@@ -12,6 +14,7 @@ interface Props {
   className?: string
 }
 
+// 방문한 곳은 채워진 도장, 미방문은 점선 원으로 그린다
 export function Stamp({
   category,
   size = 52,

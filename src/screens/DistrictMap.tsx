@@ -1,3 +1,4 @@
+// 구 상세 화면: 카카오 지도 위에 그 구의 장소 마커를 표시한다
 import { useEffect, useMemo, useRef, useState } from "react"
 import { ChevronLeft, MapPin } from "lucide-react"
 import { DISTRICTS } from "@/data/districts"
@@ -9,6 +10,7 @@ import { CategoryDot, CategoryTag, Chip } from "@/components/bits"
 
 const UNLOCATED = "unlocated"
 
+// 카카오 지도 인스턴스 타입
 type KakaoMap = InstanceType<KakaoNamespace["maps"]["Map"]>
 
 /** 마커 DOM — 방문한 곳은 카테고리색으로 채워지고 파도 도장이, 미방문은 흰 배경에 색 링 */
@@ -43,6 +45,7 @@ function markerElement(place: Place, visited: boolean, onClick: () => void) {
   return el
 }
 
+// 지도를 띄우고 장소 마커를 그린다. 지도를 못 불러오면 장소 목록으로 대체한다
 export function DistrictMap({
   districtId,
   onBack,

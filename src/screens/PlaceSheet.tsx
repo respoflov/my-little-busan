@@ -1,3 +1,4 @@
+// 장소 시트: 장소 정보를 보여 주고 방문 기록(날짜·시간·사진·메모)을 남긴다
 import { useEffect, useMemo, useRef, useState } from "react"
 import {
   AlertTriangle,
@@ -30,6 +31,7 @@ import type { Place, Transit, Visit } from "@/lib/types"
 
 const TRANSPORTS: Transit[] = ["subway", "bus", "car", "walk"]
 
+// "HH:MM" 두 시각 사이의 분 수를 계산한다
 function minutesBetween(start: string, end: string): number | null {
   if (!start || !end) return null
   const [sh, sm] = start.split(":").map(Number)
@@ -40,6 +42,7 @@ function minutesBetween(start: string, end: string): number | null {
   return diff
 }
 
+// 장소 하나의 정보와 기록 입력 폼을 담은 바텀시트
 export function PlaceSheet({ place, onClose }: { place: Place | null; onClose: () => void }) {
   const { d, data, visitOf, saveVisit, deleteVisit, districtOf } = useStore()
   const lang = data.settings.lang
