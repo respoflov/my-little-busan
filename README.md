@@ -79,3 +79,9 @@ src/
 - [design-mockup.html](design-mockup.html) — 구현 전 승인용 시안 v1~v6 (제작 과정 기록, 삭제 금지)
 - [places_draft.md](places_draft.md) — 장소 64곳 원본 리스트
 - [히스토리.md](히스토리.md) — 제작 이력
+
+## 라이선스
+
+Copyright 2026 respoflov
+
+이 저장소의 코드는 [Apache License 2.0](LICENSE)을 따릅니다. 앱이 사용하는 외부 폰트·라이브러리는 각자의 라이선스를 따릅니다.
